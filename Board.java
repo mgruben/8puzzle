@@ -122,8 +122,12 @@ public class Board {
     private void exch(int[][] b, int i, int j) {
         int len = b.length;
         int tmp = b[i / len][i % len];
+        System.out.println("Empty space at [" + i / len + "][" + i % len + "]");
+        System.out.println("Pushing " + b[j / len][j % len] + " to empty space");
         b[i / len][i % len] = b[j / len][j % len];
-        b[j / len][j % len]= tmp;
+        System.out.println("Empty space is now at [" + j / len + "][" 
+                + j % len + "]");
+        b[j / len][j % len] = tmp;
     }
     
     // All neighboring boards
@@ -133,7 +137,7 @@ public class Board {
         // locate the straight-line index of the empty space
         int i = 0;
         while (blocks[i / n][i % n] != 0) i++;
-        
+        System.out.println("Empty block located at " + i);
         int emptyCol = i % n;
         int leftCol = emptyCol - 1;
         int rightCol = emptyCol + 1;
@@ -168,22 +172,26 @@ public class Board {
         // Construct new valid neighbors
         int[][] tmp;
         if (validNeighbors[0][0]) { // Check above
-            tmp = blocks;
+            System.out.println("Valid space above");
+            tmp = blocks.clone();
             exch(tmp, i, i - n);
             s.push(new Board(tmp));
         }
         if (validNeighbors[0][1]) { // Check below
-            tmp = blocks;
+            System.out.println("Valid space below");
+            tmp = blocks.clone();
             exch(tmp, i, i + n);
             s.push(new Board(tmp));
         }
         if (validNeighbors[1][0]) { // Check left
-            tmp = blocks;
+            System.out.println("Valid space to the left");
+            tmp = blocks.clone();
             exch(tmp, i, i - 1);
             s.push(new Board(tmp));
         }
         if (validNeighbors[1][1]) { // Check right
-            tmp = blocks;
+            System.out.println("Valid space to the right");
+            tmp = blocks.clone();
             exch(tmp, i, i + 1);
             s.push(new Board(tmp));
         }
