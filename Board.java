@@ -118,7 +118,7 @@ public class Board {
         b[j / len][j % len]= tmp;
     }
     
-    // All neighbording boards
+    // All neighboring boards
     public Iterable<Board> neighbors() {
         
     }
