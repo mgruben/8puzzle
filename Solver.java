@@ -44,6 +44,9 @@ public class Solver {
         pqTwin = new MinPQ<>();
         pqTwin.insert(currentTwin);
         
+        System.out.println(current.board.toString());
+        System.out.println(currentTwin.board.toString());
+        
         // Look for a solution in either the given board or its twin
         while (!current.board.isGoal() && !currentTwin.board.isGoal()) {
             // Given board
@@ -112,14 +115,14 @@ public class Solver {
         
         @Override
         public int compareTo(SearchNode that) {
-            return Integer.valueOf(board.hamming() + numMoves)
-                    .compareTo(that.board.hamming() + that.numMoves);
+            return Integer.valueOf(board.manhattan() + numMoves)
+                    .compareTo(that.board.manhattan() + that.numMoves);
         }
     }
     
     // solve a slider puzzle (given below)
     public static void main(String[] args) {
-        In in = new In("tests-8puzzle/puzzle3x3-unsolvable.txt");
+        In in = new In("tests-8puzzle/puzzle3x3-17.txt");
         int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
