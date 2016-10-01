@@ -28,12 +28,11 @@ import java.util.Iterator;
  */
 public class Solver {
     MinPQ<SearchNode> pq = new MinPQ<>();
-    SearchNode sn;
+    SearchNode current;
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
-        sn = new SearchNode(initial, null, 0);
-        pq.insert(sn);
-        SearchNode current = pq.min();
+        current = new SearchNode(initial, null, 0);
+        pq.insert(current);
         while (!current.board.isGoal()) {
             pq.delMin();
             for (Board neigh: current.board.neighbors()) {
@@ -52,7 +51,8 @@ public class Solver {
     
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
-        
+        if (!isSolvable()) return -1;
+        else return current.numMoves;
     }
     
     // sequence of boards in a shortest solution; null if unsolvable
