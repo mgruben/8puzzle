@@ -189,24 +189,20 @@ public class Board {
         
         // Calculate spatial variables for clarity
         int emptyCol = loc % n;
-        int leftCol = emptyCol - 1;
-        int rightCol = emptyCol + 1;
         int emptyRow = loc / n;
-        int aboveRow = emptyRow - 1;
-        int belowRow = emptyRow + 1;
-        
+
         int tmp[][];
         // Construct new valid neighbors
-        if (aboveRow >= 0) { // Check above
+        if (emptyRow - 1 >= 0) { // Check above
             s.push(newNeighbor(loc - n));
         }
-        if (belowRow < n) { // Check below
+        if (emptyRow + 1 < n) { // Check below
             s.push(newNeighbor(loc + n));
         }
-        if (leftCol >= 0) { // Check left
+        if (emptyCol - 1 >= 0) { // Check left
             s.push(newNeighbor(loc - 1));
         }
-        if (rightCol < n) { // Check right
+        if (emptyCol + 1 < n) { // Check right
             s.push(newNeighbor(loc + 1));
         }
         
