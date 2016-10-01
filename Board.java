@@ -125,7 +125,6 @@ public class Board {
      * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
      */
     private void exch(int[] b, int i, int j) {
-        int len = b.length;
         int tmp = b[i];
         b[i] = b[j];
         b[j] = tmp;
@@ -146,6 +145,15 @@ public class Board {
         return c;
     }
     
+    /**
+     * Copies the entries from o to c, where o is a 1d array, and c is a 2d
+     * array, and returns c.
+     * This method presumes that o is a square array
+     * (e.g. width = depth).
+     * @param o
+     * @param len
+     * @return 
+     */
     private int[][] toDoubleArray(int[] o, int len) {
         int[][] c = new int[len][len];
         for (int i = 0; i < o.length; i++) {
