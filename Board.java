@@ -1,3 +1,7 @@
+
+import edu.princeton.cs.algs4.Stack;
+import java.util.Arrays;
+
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
  *
@@ -23,6 +27,8 @@ public class Board {
     private int n;
     private int[][] blocks;
     private int[][] goal;
+    // Consider adding a private int to store the location of the empty space
+    
     /**
      * construct a board from an n-by-n array of blocks
      * (where blocks[i][j] = block in row i, column j).
@@ -88,6 +94,7 @@ public class Board {
         exch(twin, i, j);
         return new Board(twin);
     }
+    
     // Does this board equal y?
     @Override
     public boolean equals(Object y) {
@@ -120,7 +127,67 @@ public class Board {
     
     // All neighboring boards
     public Iterable<Board> neighbors() {
+        Stack s = new Stack();
         
+        // locate the straight-line index of the empty space
+        int i = 0;
+        while (blocks[i / n][i % n] != 0) i++;
+        
+        int emptyCol = i % n;
+        int leftCol = emptyCol - 1;
+        int rightCol = emptyCol + 1;
+        int emptyRow = i / n;
+        int aboveRow = emptyRow - 1;
+        int belowRow = emptyRow + 1;
+        
+        /**
+         * Given an empty space (x) within a grid, the following boolean array
+         * denotes which neighbors are valid:
+         *         0,0 
+         *    1,0   x   1,1
+         *         0,1 
+         */
+        
+        boolean[][] validNeighbors = new boolean[2][2];
+        Arrays.fill(validNeighbors, true);
+        
+        if (leftCol < 0) {
+            validNeighbors[1][0] = false;
+        }
+        else if (rightCol >= n) {
+            validNeighbors[1][1] = false;
+        }
+        if (aboveRow < 0) {
+            validNeighbors[0][0] = false;
+        }
+        else if (belowRow >= n) {
+            validNeighbors[0][1] = false;
+        }
+        
+        // Construct new valid neighbors
+        int[][] tmp;
+        if (validNeighbors[0][0]) { // Check above
+            tmp = blocks;
+            exch(tmp, i, i - n);
+            s.push(new Board(tmp));
+        }
+        if (validNeighbors[0][1]) { // Check below
+            tmp = blocks;
+            exch(tmp, i, i + n);
+            s.push(new Board(tmp));
+        }
+        if (validNeighbors[1][0]) { // Check left
+            tmp = blocks;
+            exch(tmp, i, i - 1);
+            s.push(new Board(tmp));
+        }
+        if (validNeighbors[1][1]) { // Check right
+            tmp = blocks;
+            exch(tmp, i, i + 1);
+            s.push(new Board(tmp));
+        }
+        
+        return s;
     }
     // string representation of this board (in the output format specified below)
     public String toString() {
