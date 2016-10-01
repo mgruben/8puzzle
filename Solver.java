@@ -58,19 +58,15 @@ public class Solver {
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution() {
         if (!isSolvable()) return null;
-        else return new BoardIterator();
-    }
-    
-    private class BoardIterator implements Iterator<Board> {
-        // Store items in a queue, as per FAQ suggestion
-        private final Stack s;
         
-        private BoardIterator() {
-            s.push(pq.min());
-            while (pq.min().previous != null) {
-                
-            }
+        // Store items in a stack, as per FAQ suggestion
+        Stack s = new Stack();
+        SearchNode current = pq.min();
+        while (current.previous != null) {
+            s.push(current.board);
+            current = current.previous;
         }
+        return s;
     }
     
     private class SearchNode {
