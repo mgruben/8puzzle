@@ -81,8 +81,16 @@ public class Board {
         return new Board(twin);
     }
     // Does this board equal y?
+    @Override
     public boolean equals(Object y) {
+        if (y == this) return true; // Literally the same object
+        if (y == null) return false; // Handle null comparison
+        if (y.getClass() != this.getClass()) return false; // not even the same
+                                                           // class
         
+        // Cast and compare blocks
+        Board x = (Board) y;
+        return (this.blocks == x.blocks);
     }
     
     /**
