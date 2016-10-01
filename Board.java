@@ -25,7 +25,7 @@ import java.util.Arrays;
  * @author Michael <GrubenM@GMail.com>
  */
 public class Board {
-    private int n;
+    private final int n;
     private final int[][] blocks;
     // Consider adding a private int to store the location of the empty space
     
@@ -213,6 +213,7 @@ public class Board {
         return s;
     }
     // string representation of this board (in the output format specified below)
+    @Override
     public String toString() {
         String ans = "";
         ans += n + "\n";

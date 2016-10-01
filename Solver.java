@@ -25,9 +25,9 @@ import edu.princeton.cs.algs4.StdOut;
  * @author Michael <GrubenM@GMail.com>
  */
 public class Solver {
-    private MinPQ<SearchNode> pq;
+    private final MinPQ<SearchNode> pq;
     private SearchNode current;
-    private MinPQ<SearchNode> pqTwin;
+    private final MinPQ<SearchNode> pqTwin;
     private SearchNode currentTwin;
     private boolean solvable = false;
     
