@@ -84,8 +84,8 @@ public class Solver {
         
         @Override
         public int compareTo(SearchNode that) {
-            return Integer.valueOf(board.hamming())
-                    .compareTo(that.board.hamming());
+            return Integer.valueOf(board.hamming() + numMoves)
+                    .compareTo(that.board.hamming() + that.numMoves);
         }
     }
     
