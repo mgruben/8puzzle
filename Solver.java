@@ -3,7 +3,6 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
-
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
  *
@@ -26,11 +25,12 @@ import edu.princeton.cs.algs4.StdOut;
  * @author Michael <GrubenM@GMail.com>
  */
 public class Solver {
-    MinPQ<SearchNode> pq = new MinPQ<>();
+    MinPQ<SearchNode> pq;
     SearchNode current;
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
         current = new SearchNode(initial, null, 0);
+        pq = new MinPQ<>(current.board.hamming());
         pq.insert(current);
         while (!current.board.isGoal()) {
             pq.delMin();
