@@ -22,7 +22,7 @@
 public class Board {
     private int n;
     private int[][] blocks;
-    private int[][] goal = {{1,2,3},{4,5,6},{7,8,9}};
+    private int[][] goal;
     /**
      * construct a board from an n-by-n array of blocks
      * (where blocks[i][j] = block in row i, column j).
@@ -31,6 +31,10 @@ public class Board {
     public Board(int[][] blocks) {
         this.blocks = blocks;
         n = this.blocks.length;
+        goal = new int[n][n];
+        for (int i = 0; i < n * n; i++) {
+            goal[i / n][i % n] = i + 1;
+        }
     }
     
     // Board dimension n
