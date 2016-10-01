@@ -46,7 +46,8 @@ public class Solver {
     
     // is the initial board solvable?
     public boolean isSolvable() {
-        
+        // TODO
+        return true;
     }
     
     // min number of moves to solve initial board; -1 if unsolvable
@@ -100,5 +101,6 @@ public class Solver {
             StdOut.println("Minimum number of moves = " + solver.moves());
             for (Board board : solver.solution())
                 StdOut.println(board);
+        }
     }
 }
