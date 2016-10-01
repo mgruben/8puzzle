@@ -235,5 +235,7 @@ public class Board {
             for (int j = 0; j < n; j++)
                 blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
+        System.out.println(initial.toString());
+        System.out.println(initial.twin().toString());
     }
 }
