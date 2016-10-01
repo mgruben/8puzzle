@@ -30,10 +30,13 @@ public class MinPQ<Key extends Comparable<Key>> {
      * Passing capacity here is for convenience, but in practice pq should
      * almost certainly be a resizing array or a linked list.
      */
-    public MinPQ(int capacity) {
+    public MinPQ() {
         // Recall that, to ease indexing maths, we use a 1-indexed array.
-        pq = (Key[]) new Comparable[capacity + 1];
+        pq = (Key[]) new Comparable[1];
+        size = 0;
     }
+    
+    
     
     // Create a priority queue with the given keys
     public MinPQ(Key[] k) {}
@@ -74,8 +77,26 @@ public class MinPQ<Key extends Comparable<Key>> {
      * successive swaps.
      */
     public void insert(Key k) {
+        if (k == null) throw new java.lang.NullPointerException();
+        if (size == pq.length) resize(2 * pq.length);
         pq[++size] = k;
         swim(size);
+    }
+    
+    /**
+     * Resizes the array pq to [capacity].
+     * 
+     * This is a quadratic operation in the length of a,
+     * and so should only be performed sparingly.
+     * 
+     * Amortizing this cost over the number of operations which
+     * can be performed in the new array, however,
+     * the ResizingArray is constant.
+     */
+    private void resize(int capacity) {
+        Key[] copy = (Key[]) new Comparable[capacity];
+        for (int i = 0; i < size; i++) copy[i] = pq[i];
+        pq = copy;
     }
     
     /**
@@ -95,10 +116,12 @@ public class MinPQ<Key extends Comparable<Key>> {
     
     // Return and remove the smallest key
     public Key delMin() {
+        if (isEmpty()) throw new java.util.NoSuchElementException();
         Key min = pq[1];
         exch(1, size--);
         sink(1);
         pq[size + 1] = null;
+        if (size >= 1 && size == pq.length / 4) resize(pq.length / 2);
         return min;
     }
     
