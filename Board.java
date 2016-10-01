@@ -123,6 +123,8 @@ public class Board {
      *   6 7 8
      * Or, stated differently:
      * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
+     * 
+     * This method is for 1-dimensional arrays.
      */
     private void exch(int[] b, int i, int j) {
         int tmp = b[i];
@@ -139,6 +141,8 @@ public class Board {
      *   6 7 8
      * Or, stated differently:
      * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
+     * 
+     * This method is for 2-dimensional arrays.
      */
     private void exch(int[][] b, int i, int j) {
         int len = b.length;
@@ -194,28 +198,34 @@ public class Board {
         int tmp[][];
         // Construct new valid neighbors
         if (aboveRow >= 0) { // Check above
-            tmp = toDoubleArray(blocks, n);
-            exch(tmp, loc, loc - n);
-            s.push(new Board(tmp));
+            s.push(newNeighbor(loc - n));
         }
         if (belowRow < n) { // Check below
-            tmp = toDoubleArray(blocks, n);
-            exch(tmp, loc, loc + n);
-            s.push(new Board(tmp));
+            s.push(newNeighbor(loc + n));
         }
         if (leftCol >= 0) { // Check left
-            tmp = toDoubleArray(blocks, n);
-            exch(tmp, loc, loc - 1);
-            s.push(new Board(tmp));
+            s.push(newNeighbor(loc - 1));
         }
         if (rightCol < n) { // Check right
-            tmp = toDoubleArray(blocks, n);
-            exch(tmp, loc, loc + 1);
-            s.push(new Board(tmp));
+            s.push(newNeighbor(loc + 1));
         }
         
         return s;
     }
+    
+    /**
+     * Given the 1-dimensional index of the location from which to move
+     * the next block, moves the block at that index into the empty space,
+     * and returns a new Board representing that movement.
+     * @param toBeEmpty
+     * @return 
+     */
+    private Board newNeighbor(int toBeEmpty) {
+        int tmp[][] = toDoubleArray(blocks, n);
+        exch(tmp, loc, toBeEmpty);
+        return new Board(tmp);
+    }
+    
     // string representation of this board (in the output format specified below)
     @Override
     public String toString() {
