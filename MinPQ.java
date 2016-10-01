@@ -94,12 +94,12 @@ public class MinPQ<Key extends Comparable<Key>> {
     }
     
     // Return and remove the largest key
-    public Key delMax() {
-        Key max = pq[1];
+    public Key delMin() {
+        Key min = pq[1];
         exch(1, size--);
         sink(1);
         pq[size + 1] = null;
-        return max;
+        return min;
     }
     
     // Is the priority queue empty?
