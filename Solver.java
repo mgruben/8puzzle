@@ -31,7 +31,7 @@ public class Solver {
     public Solver(Board initial) {
         pq.insert(initial);
         Board current = pq.min();
-        while (current != target) {
+        while (!current.isGoal()) {
             pq.delMin();
             for (Board neigh: current.neighbors()) pq.insert(neigh);
             current = pq.min();
