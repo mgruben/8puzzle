@@ -46,8 +46,8 @@ public class MinPQ<Key extends Comparable<Key>> {
         pq[j] = tmp;
     }
     
-    private boolean less(int i, int j) {
-        return pq[i].compareTo(pq[j]) < 0;
+    private boolean greater(int i, int j) {
+        return pq[i].compareTo(pq[j]) > 0;
     }
     
     /**
