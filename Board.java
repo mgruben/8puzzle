@@ -149,7 +149,7 @@ public class Board {
          */
         
         boolean[][] validNeighbors = new boolean[2][2];
-        Arrays.fill(validNeighbors, true);
+        for (boolean[] dimension: validNeighbors) Arrays.fill(dimension, true);
         
         if (leftCol < 0) {
             validNeighbors[1][0] = false;
