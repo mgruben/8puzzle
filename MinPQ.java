@@ -107,8 +107,8 @@ public class MinPQ<Key extends Comparable<Key>> {
         return size == 0;
     }
     
-    // Return the largest key
-    public Key max() {
+    // Return the smallest key
+    public Key min() {
         return pq[1];
     }
     
