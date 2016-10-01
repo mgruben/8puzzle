@@ -35,7 +35,7 @@ public class Board {
         // Initialize and populate the goal board
         goal = new int[n][n];
         for (int i = 0; i < n * n; i++) {
-            goal[i / n][i % n] = i + 1;
+            goal[i / n][i % n] = (i + 1) % (n * n);
         }
     }
     
@@ -48,7 +48,7 @@ public class Board {
     public int hamming() {
         int ham = 0;
         for (int i = 0; i < n * n; i++) {
-            if (blocks[i / n][i % n] != i + 1) ham++;
+            if (blocks[i / n][i % n] != (i + 1) % (n * n)) ham++;
         }
         return ham;
     }
@@ -58,6 +58,7 @@ public class Board {
         int man = 0;
         for (int i = 0; i < n * n; i++) {
             int t = blocks[i / n][i % n]; // Store the entry at the index
+            if (t == 0) t = n * n; // Handle the 0 block
             man += Math.abs(((t - 1) / n) - (i / n)); // V-distance
             man += Math.abs(((t - 1) % n) - (i % n)); // H-distance
         }
