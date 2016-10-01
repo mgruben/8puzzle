@@ -33,19 +33,28 @@ public class Solver {
     
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
+        
+        // Declare variables for given board
         current = new SearchNode(initial, null, 0);
-        currentTwin = new SearchNode(initial.twin(), null, 0);
         pq = new MinPQ<>();
         pq.insert(current);
+        
+        // Declare variables for given board's twin
+        currentTwin = new SearchNode(initial.twin(), null, 0);
         pqTwin = new MinPQ<>();
         pqTwin.insert(currentTwin);
+        
+        // Look for a solution in either the given board or its twin
         while (!current.board.isGoal() && !currentTwin.board.isGoal()) {
+            // Given board
             pq.delMin();
             for (Board neigh: current.board.neighbors()) {
                 if (neigh != current.board) {
                     pq.insert(new SearchNode(neigh, current, current.numMoves + 1));
                 }
             }
+            
+            // Its twin
             pqTwin.delMin();
             for (Board neigh: currentTwin.board.neighbors()) {
                 if (neigh != currentTwin.board) {
@@ -53,9 +62,15 @@ public class Solver {
                             neigh, currentTwin, currentTwin.numMoves + 1));
                 }
             }
+            
+            // Update the given board's pq and its twin's pq
             current = pq.min();
             currentTwin = pqTwin.min();
         }
+        /**
+         * Once we're out of the loop, we need only check whether the given
+         * board led to a solution to know whether the given board is solvable.
+         */
         if (current.board.isGoal()) solvable = true;
     }
     
