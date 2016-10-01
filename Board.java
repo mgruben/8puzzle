@@ -69,6 +69,7 @@ public class Board {
     public boolean isGoal() {
         return blocks == goal;
     }
+    
     // A board that is obtained by exchanging any pair of blocks
     public Board twin() {
         int[][] twin = blocks;
