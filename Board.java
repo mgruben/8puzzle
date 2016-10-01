@@ -31,6 +31,8 @@ public class Board {
     public Board(int[][] blocks) {
         this.blocks = blocks;
         n = this.blocks.length;
+        
+        // Initialize and populate the goal board
         goal = new int[n][n];
         for (int i = 0; i < n * n; i++) {
             goal[i / n][i % n] = i + 1;
