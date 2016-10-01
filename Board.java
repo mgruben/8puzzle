@@ -84,7 +84,15 @@ public class Board {
     }
     // string representation of this board (in the output format specified below)
     public String toString() {
-        
+        String ans = "";
+        ans += n + "\n";
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                ans += String.format("%2d ", blocks[i][j]);
+            }
+            ans += "\n";
+        }
+        return ans;
     }
     // unit tests (not graded)
     public static void main(String[] args) {
