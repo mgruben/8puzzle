@@ -35,11 +35,13 @@ public class Board {
      * @param blocks 
      */
     public Board(int[][] blocks) {
-        this.blocks = blocks;
-        n = this.blocks.length;
-        for (int i = 0; i < n * n; i++) if (blocks[i / n][i % n] == 0) {
-            loc = i;
-            break;
+        n = blocks.length;
+        this.blocks = new int[n][n];
+        for (int i = 0; i < n * n; i++) {
+            if (blocks[i / n][i % n] == 0) {
+                loc = i;
+            }
+            this.blocks[i / n][i % n] = blocks[i / n][i % n];
         }
     }
     
