@@ -32,7 +32,11 @@ public class Board {
         this.blocks = blocks;
         n = this.blocks.length;
         
-        // Initialize and populate the goal board
+        /**
+         * Initialize and populate the goal board
+         * Note that % (n * n) means that the last "block"
+         * to be added will be 0.
+         */
         goal = new int[n][n];
         for (int i = 0; i < n * n; i++) {
             goal[i / n][i % n] = (i + 1) % (n * n);
@@ -44,7 +48,11 @@ public class Board {
         return n;
     }
     
-    // Number of blocks out of place
+    /**
+     * Number of blocks out of place
+     * Note that % (n * n) means that the last "block"
+     * to be added will be 0.
+     */
     public int hamming() {
         int ham = 0;
         for (int i = 0; i < n * n - 1; i++) {
@@ -100,6 +108,8 @@ public class Board {
      *   0 1 2
      *   3 4 5
      *   6 7 8
+     * Or, stated differently:
+     * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
      */
     private void exch(int[][] b, int i, int j) {
         int len = b.length;
