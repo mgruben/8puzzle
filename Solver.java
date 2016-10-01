@@ -1,5 +1,6 @@
 
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.StdOut;
 
 /*
@@ -24,10 +25,12 @@ import edu.princeton.cs.algs4.StdOut;
  * @author Michael <GrubenM@GMail.com>
  */
 public class Solver {
+    MinPQ<Board> pq = new MinPQ<>();
     
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
-        
+        pq.insert(initial);
+        Board current = pq.min();
     }
     
     // is the initial board solvable?
