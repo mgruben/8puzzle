@@ -78,15 +78,13 @@ public class Board {
     // Is this board the goal board?
     public boolean isGoal() {
         /**
-         * Initialize and populate the goal board
-         * Note that % (n * n) means that the last "block"
-         * to be added will be 0.
+         * Note that the "goal board" has entries of (i + 1) % (n * n)
+         * for each index i.
          */
-        int[][] goal = new int[n][n];
         for (int i = 0; i < n * n; i++) {
-            goal[i / n][i % n] = (i + 1) % (n * n);
+            if (blocks[i / n][i % n] != (i + 1) % (n * n)) return false;
         }
-        return this.equals(new Board(goal));
+        return true;
     }
     
     // A board that is obtained by exchanging any pair of blocks
