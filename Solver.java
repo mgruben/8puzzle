@@ -44,9 +44,6 @@ public class Solver {
         pqTwin = new MinPQ<>();
         pqTwin.insert(currentTwin);
         
-        System.out.println(current.board.toString());
-        System.out.println(currentTwin.board.toString());
-        
         // Look for a solution in either the given board or its twin
         while (!current.board.isGoal() && !currentTwin.board.isGoal()) {
             // Given board
