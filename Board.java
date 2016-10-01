@@ -27,7 +27,7 @@ import java.util.Arrays;
 public class Board {
     private final int n;
     private final int[][] blocks;
-    // Consider adding a private int to store the location of the empty space
+    private int loc;
     
     /**
      * construct a board from an n-by-n array of blocks
@@ -37,6 +37,10 @@ public class Board {
     public Board(int[][] blocks) {
         this.blocks = blocks;
         n = this.blocks.length;
+        for (int i = 0; i < n * n; i++) if (blocks[i / n][i % n] == 0) {
+            loc = i;
+            break;
+        }
     }
     
     // Board dimension n
@@ -151,12 +155,10 @@ public class Board {
         Stack<Board> s = new Stack<>();
         
         // locate the straight-line index of the empty space
-        int i = 0;
-        while (blocks[i / n][i % n] != 0) i++;
-        int emptyCol = i % n;
+        int emptyCol = loc % n;
         int leftCol = emptyCol - 1;
         int rightCol = emptyCol + 1;
-        int emptyRow = i / n;
+        int emptyRow = loc / n;
         int aboveRow = emptyRow - 1;
         int belowRow = emptyRow + 1;
         
@@ -187,25 +189,25 @@ public class Board {
         // Construct new valid neighbors
         if (validNeighbors[0][0]) { // Check above
             int[][] tmp = iterateCopy(blocks);
-            exch(tmp, i, i - n);
+            exch(tmp, loc, loc - n);
             Board above = new Board(tmp);
             s.push(above);
         }
         if (validNeighbors[0][1]) { // Check below
             int[][] tmp = iterateCopy(blocks);
-            exch(tmp, i, i + n);
+            exch(tmp, loc, loc + n);
             Board below = new Board(tmp);
             s.push(below);
         }
         if (validNeighbors[1][0]) { // Check left
             int[][] tmp = iterateCopy(blocks);
-            exch(tmp, i, i - 1);
+            exch(tmp, loc, loc - 1);
             Board left = new Board(tmp);
             s.push(left);
         }
         if (validNeighbors[1][1]) { // Check right
             int[][] tmp = iterateCopy(blocks);
-            exch(tmp, i, i + 1);
+            exch(tmp, loc, loc + 1);
             Board right = new Board(tmp);
             s.push(right);
         }
@@ -227,7 +229,7 @@ public class Board {
     }
     // unit tests (not graded)
     public static void main(String[] args) {
-        In in = new In("tests-8puzzle/puzzle04.txt");
+        In in = new In("tests-8puzzle/puzzle3x3-unsolvable1.txt");
         int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
