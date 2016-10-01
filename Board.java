@@ -71,7 +71,10 @@ public class Board {
     }
     // A board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        
+        int[][] twin = blocks;
+        for (int i = 0; i < n * n - 1; i++) {
+            if ((twin[i / n][i % n] != 0) && (twin[i / n][i % n] != 0)
+        }
     }
     // Does this board equal y?
     public boolean equals(Object y) {
