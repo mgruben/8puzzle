@@ -26,8 +26,8 @@ import java.util.Arrays;
  */
 public class Board {
     private int n;
-    private int[][] blocks;
-    private int[][] goal;
+    private final int[][] blocks;
+    private final int[][] goal;
     // Consider adding a private int to store the location of the empty space
     
     /**
@@ -175,29 +175,37 @@ public class Board {
             System.out.println("Valid space above");
             int[][] tmp = blocks.clone();
             exch(tmp, i, i - n);
-            s.push(new Board(tmp));
-            exch(tmp, i, i - n);
+            Board above = new Board(tmp);
+            System.out.println("Compare to original board:");
+            System.out.println(toString());
+            s.push(above);
         }
         if (validNeighbors[0][1]) { // Check below
             System.out.println("Valid space below");
             int[][] tmp = blocks.clone();
             exch(tmp, i, i + n);
-            s.push(new Board(tmp));
-            exch(tmp, i, i + n);
+            Board below = new Board(tmp);
+            System.out.println("Compare to original board:");
+            System.out.println(toString());
+            s.push(below);
         }
         if (validNeighbors[1][0]) { // Check left
             System.out.println("Valid space to the left");
             int[][] tmp = blocks.clone();
             exch(tmp, i, i - 1);
-            s.push(new Board(tmp));
-            exch(tmp, i, i - 1);
+            Board left = new Board(tmp);
+            System.out.println("Compare to original board:");
+            System.out.println(toString());
+            s.push(left);
         }
         if (validNeighbors[1][1]) { // Check right
             System.out.println("Valid space to the right");
             int[][] tmp = blocks.clone();
             exch(tmp, i, i + 1);
-            s.push(new Board(tmp));
-            exch(tmp, i, i + 1);
+            Board right = new Board(tmp);
+            System.out.println("Compare to original board:");
+            System.out.println(toString());
+            s.push(right);
         }
         
         return s;
@@ -223,7 +231,6 @@ public class Board {
             for (int j = 0; j < n; j++)
                 blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
-        
         System.out.println(initial.toString());
         for (Board neighbor: initial.neighbors()) {
             System.out.println(neighbor.toString());
