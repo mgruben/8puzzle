@@ -26,8 +26,8 @@ import java.util.Arrays;
  */
 public class Board {
     private int n;
-    private int[][] blocks;
-    private int[][] goal;
+    private final int[][] blocks;
+    private final int[][] goal;
     // Consider adding a private int to store the location of the empty space
     
     /**
@@ -120,20 +120,37 @@ public class Board {
      * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
      */
     private void exch(int[][] b, int i, int j) {
+        System.out.println(new Board(b).toString());
         int len = b.length;
         int tmp = b[i / len][i % len];
         b[i / len][i % len] = b[j / len][j % len];
-        b[j / len][j % len]= tmp;
+        b[j / len][j % len] = tmp;
+    }
+    
+    /**
+     * Copies the entries from o to c, and returns c.
+     * This method presumes that o is a square array
+     * (e.g. width = depth).
+     * @param o
+     * @return 
+     */
+    private int[][] iterateCopy(int[][] o) {
+        int[][] c = new int[o.length][o.length];
+        for (int i = 0; i < o.length; i++) {
+            for (int j = 0; j < o.length; j++) {
+                c[i][j] = o[i][j];
+            }
+        }
+        return c;
     }
     
     // All neighboring boards
     public Iterable<Board> neighbors() {
-        Stack s = new Stack();
+        Stack<Board> s = new Stack<>();
         
         // locate the straight-line index of the empty space
         int i = 0;
         while (blocks[i / n][i % n] != 0) i++;
-        
         int emptyCol = i % n;
         int leftCol = emptyCol - 1;
         int rightCol = emptyCol + 1;
@@ -166,26 +183,29 @@ public class Board {
         }
         
         // Construct new valid neighbors
-        int[][] tmp;
         if (validNeighbors[0][0]) { // Check above
-            tmp = blocks;
+            int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i - n);
-            s.push(new Board(tmp));
+            Board above = new Board(tmp);
+            s.push(above);
         }
         if (validNeighbors[0][1]) { // Check below
-            tmp = blocks;
+            int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i + n);
-            s.push(new Board(tmp));
+            Board below = new Board(tmp);
+            s.push(below);
         }
         if (validNeighbors[1][0]) { // Check left
-            tmp = blocks;
+            int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i - 1);
-            s.push(new Board(tmp));
+            Board left = new Board(tmp);
+            s.push(left);
         }
         if (validNeighbors[1][1]) { // Check right
-            tmp = blocks;
+            int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i + 1);
-            s.push(new Board(tmp));
+            Board right = new Board(tmp);
+            s.push(right);
         }
         
         return s;
@@ -211,10 +231,5 @@ public class Board {
             for (int j = 0; j < n; j++)
                 blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
-        
-        System.out.println(initial.toString());
-        for (Board neighbor: initial.neighbors()) {
-            System.out.println(neighbor.toString());
-        }
     }
 }
