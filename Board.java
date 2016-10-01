@@ -120,6 +120,7 @@ public class Board {
      * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
      */
     private void exch(int[][] b, int i, int j) {
+        System.out.println(new Board(b).toString());
         int len = b.length;
         int tmp = b[i / len][i % len];
         System.out.println("Empty space at [" + i / len + "][" + i % len + "]");
@@ -132,7 +133,7 @@ public class Board {
     
     // All neighboring boards
     public Iterable<Board> neighbors() {
-        Stack s = new Stack();
+        Stack<Board> s = new Stack<>();
         
         // locate the straight-line index of the empty space
         int i = 0;
@@ -170,30 +171,33 @@ public class Board {
         }
         
         // Construct new valid neighbors
-        int[][] tmp;
         if (validNeighbors[0][0]) { // Check above
             System.out.println("Valid space above");
-            tmp = blocks.clone();
+            int[][] tmp = blocks.clone();
             exch(tmp, i, i - n);
             s.push(new Board(tmp));
+            exch(tmp, i, i - n);
         }
         if (validNeighbors[0][1]) { // Check below
             System.out.println("Valid space below");
-            tmp = blocks.clone();
+            int[][] tmp = blocks.clone();
             exch(tmp, i, i + n);
             s.push(new Board(tmp));
+            exch(tmp, i, i + n);
         }
         if (validNeighbors[1][0]) { // Check left
             System.out.println("Valid space to the left");
-            tmp = blocks.clone();
+            int[][] tmp = blocks.clone();
             exch(tmp, i, i - 1);
             s.push(new Board(tmp));
+            exch(tmp, i, i - 1);
         }
         if (validNeighbors[1][1]) { // Check right
             System.out.println("Valid space to the right");
-            tmp = blocks.clone();
+            int[][] tmp = blocks.clone();
             exch(tmp, i, i + 1);
             s.push(new Board(tmp));
+            exch(tmp, i, i + 1);
         }
         
         return s;
