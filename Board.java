@@ -27,7 +27,6 @@ import java.util.Arrays;
 public class Board {
     private int n;
     private final int[][] blocks;
-    private final int[][] goal;
     // Consider adding a private int to store the location of the empty space
     
     /**
@@ -38,16 +37,6 @@ public class Board {
     public Board(int[][] blocks) {
         this.blocks = blocks;
         n = this.blocks.length;
-        
-        /**
-         * Initialize and populate the goal board
-         * Note that % (n * n) means that the last "block"
-         * to be added will be 0.
-         */
-        goal = new int[n][n];
-        for (int i = 0; i < n * n; i++) {
-            goal[i / n][i % n] = (i + 1) % (n * n);
-        }
     }
     
     // Board dimension n
@@ -82,6 +71,15 @@ public class Board {
     
     // Is this board the goal board?
     public boolean isGoal() {
+        /**
+         * Initialize and populate the goal board
+         * Note that % (n * n) means that the last "block"
+         * to be added will be 0.
+         */
+        int[][] goal = new int[n][n];
+        for (int i = 0; i < n * n; i++) {
+            goal[i / n][i % n] = (i + 1) % (n * n);
+        }
         return this.equals(new Board(goal));
     }
     
@@ -236,6 +234,9 @@ public class Board {
                 blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
         System.out.println(initial.toString());
-        System.out.println(initial.twin().toString());
+        Board twin = initial.twin();
+        System.out.println(twin.toString());
+        System.out.println(initial.isGoal());
+        System.out.println(twin.isGoal());
     }
 }
