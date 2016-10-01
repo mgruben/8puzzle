@@ -123,11 +123,7 @@ public class Board {
         System.out.println(new Board(b).toString());
         int len = b.length;
         int tmp = b[i / len][i % len];
-        System.out.println("Empty space at [" + i / len + "][" + i % len + "]");
-        System.out.println("Pushing " + b[j / len][j % len] + " to empty space");
         b[i / len][i % len] = b[j / len][j % len];
-        System.out.println("Empty space is now at [" + j / len + "][" 
-                + j % len + "]");
         b[j / len][j % len] = tmp;
     }
     
@@ -155,7 +151,6 @@ public class Board {
         // locate the straight-line index of the empty space
         int i = 0;
         while (blocks[i / n][i % n] != 0) i++;
-        System.out.println("Empty block located at " + i);
         int emptyCol = i % n;
         int leftCol = emptyCol - 1;
         int rightCol = emptyCol + 1;
@@ -189,39 +184,27 @@ public class Board {
         
         // Construct new valid neighbors
         if (validNeighbors[0][0]) { // Check above
-            System.out.println("Valid space above");
             int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i - n);
             Board above = new Board(tmp);
-            System.out.println("Compare to original board:");
-            System.out.println(toString());
             s.push(above);
         }
         if (validNeighbors[0][1]) { // Check below
-            System.out.println("Valid space below");
             int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i + n);
             Board below = new Board(tmp);
-            System.out.println("Compare to original board:");
-            System.out.println(toString());
             s.push(below);
         }
         if (validNeighbors[1][0]) { // Check left
-            System.out.println("Valid space to the left");
             int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i - 1);
             Board left = new Board(tmp);
-            System.out.println("Compare to original board:");
-            System.out.println(toString());
             s.push(left);
         }
         if (validNeighbors[1][1]) { // Check right
-            System.out.println("Valid space to the right");
             int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i + 1);
             Board right = new Board(tmp);
-            System.out.println("Compare to original board:");
-            System.out.println(toString());
             s.push(right);
         }
         
@@ -248,9 +231,5 @@ public class Board {
             for (int j = 0; j < n; j++)
                 blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
-        System.out.println(initial.toString());
-        for (Board neighbor: initial.neighbors()) {
-            System.out.println(neighbor.toString());
-        }
     }
 }
