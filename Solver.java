@@ -25,28 +25,43 @@ import edu.princeton.cs.algs4.StdOut;
  * @author Michael <GrubenM@GMail.com>
  */
 public class Solver {
-    MinPQ<SearchNode> pq;
-    SearchNode current;
+    private MinPQ<SearchNode> pq;
+    private SearchNode current;
+    private MinPQ<SearchNode> pqTwin;
+    private SearchNode currentTwin;
+    private boolean solvable = false;
+    
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
         current = new SearchNode(initial, null, 0);
+        currentTwin = new SearchNode(initial.twin(), null, 0);
         pq = new MinPQ<>();
         pq.insert(current);
-        while (!current.board.isGoal()) {
+        pqTwin = new MinPQ<>();
+        pqTwin.insert(currentTwin);
+        while (!current.board.isGoal() && !currentTwin.board.isGoal()) {
             pq.delMin();
             for (Board neigh: current.board.neighbors()) {
                 if (neigh != current.board) {
                     pq.insert(new SearchNode(neigh, current, current.numMoves + 1));
                 }
             }
+            pqTwin.delMin();
+            for (Board neigh: currentTwin.board.neighbors()) {
+                if (neigh != currentTwin.board) {
+                    pqTwin.insert(new SearchNode(
+                            neigh, currentTwin, currentTwin.numMoves + 1));
+                }
+            }
             current = pq.min();
+            currentTwin = pqTwin.min();
         }
+        if (current.board.isGoal()) solvable = true;
     }
     
     // is the initial board solvable?
     public boolean isSolvable() {
-        // TODO
-        return true;
+        return solvable;
     }
     
     // min number of moves to solve initial board; -1 if unsolvable
