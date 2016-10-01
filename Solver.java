@@ -30,7 +30,8 @@ public class Solver {
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
         current = new SearchNode(initial, null, 0);
-        pq = new MinPQ<>(current.board.hamming());
+        System.out.println(current.board.toString());
+        pq = new MinPQ<>();
         pq.insert(current);
         while (!current.board.isGoal()) {
             pq.delMin();
@@ -40,6 +41,7 @@ public class Solver {
                 }
             }
             current = pq.min();
+            System.out.println(current.board.toString());
         }
     }
     
@@ -69,14 +71,21 @@ public class Solver {
         return s;
     }
     
-    private class SearchNode {
+    private class SearchNode implements Comparable<SearchNode> {
         Board board;
         int numMoves;
         SearchNode previous;
+        
         public SearchNode(Board current, SearchNode previous, int numMoves) {
             this.board = current;
             this.previous = previous;
             this.numMoves = numMoves;
+        }
+        
+        @Override
+        public int compareTo(SearchNode that) {
+            return Integer.valueOf(board.hamming())
+                    .compareTo(that.board.hamming());
         }
     }
     
