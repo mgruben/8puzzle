@@ -83,7 +83,7 @@ public class Solver {
     
     // solve a slider puzzle (given below)
     public static void main(String[] args) {
-        In in = new In(args[0]);
+        In in = new In("tests-8puzzle/puzzle04.txt");
         int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
