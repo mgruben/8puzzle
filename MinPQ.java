@@ -27,8 +27,7 @@ public class MinPQ<Key extends Comparable<Key>> {
     
     /**
      * Create an empty priority queue.
-     * Passing capacity here is for convenience, but in practice pq should
-     * almost certainly be a resizing array or a linked list.
+     * The elements in the queue are stored in a resizingArray.
      */
     public MinPQ() {
         // Recall that, to ease indexing maths, we use a 1-indexed array.
@@ -78,7 +77,7 @@ public class MinPQ<Key extends Comparable<Key>> {
      */
     public void insert(Key k) {
         if (k == null) throw new java.lang.NullPointerException();
-        if (size == pq.length) resize(2 * pq.length);
+        if (size + 1  == pq.length) resize(2 * pq.length);
         pq[++size] = k;
         swim(size);
     }
@@ -121,7 +120,7 @@ public class MinPQ<Key extends Comparable<Key>> {
         exch(1, size--);
         sink(1);
         pq[size + 1] = null;
-        if (size >= 1 && size == pq.length / 4) resize(pq.length / 2);
+        if (size >= 1 && size + 1 == pq.length / 4) resize(pq.length / 2);
         return min;
     }
     
