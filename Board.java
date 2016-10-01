@@ -131,6 +131,23 @@ public class Board {
         b[j / len][j % len] = tmp;
     }
     
+    /**
+     * Copies the entries from o to c, and returns c.
+     * This method presumes that o is a square array
+     * (e.g. width = depth).
+     * @param o
+     * @return 
+     */
+    private int[][] iterateCopy(int[][] o) {
+        int[][] c = new int[o.length][o.length];
+        for (int i = 0; i < o.length; i++) {
+            for (int j = 0; j < o.length; j++) {
+                c[i][j] = o[i][j];
+            }
+        }
+        return c;
+    }
+    
     // All neighboring boards
     public Iterable<Board> neighbors() {
         Stack<Board> s = new Stack<>();
@@ -173,7 +190,7 @@ public class Board {
         // Construct new valid neighbors
         if (validNeighbors[0][0]) { // Check above
             System.out.println("Valid space above");
-            int[][] tmp = blocks.clone();
+            int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i - n);
             Board above = new Board(tmp);
             System.out.println("Compare to original board:");
@@ -182,7 +199,7 @@ public class Board {
         }
         if (validNeighbors[0][1]) { // Check below
             System.out.println("Valid space below");
-            int[][] tmp = blocks.clone();
+            int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i + n);
             Board below = new Board(tmp);
             System.out.println("Compare to original board:");
@@ -191,7 +208,7 @@ public class Board {
         }
         if (validNeighbors[1][0]) { // Check left
             System.out.println("Valid space to the left");
-            int[][] tmp = blocks.clone();
+            int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i - 1);
             Board left = new Board(tmp);
             System.out.println("Compare to original board:");
@@ -200,7 +217,7 @@ public class Board {
         }
         if (validNeighbors[1][1]) { // Check right
             System.out.println("Valid space to the right");
-            int[][] tmp = blocks.clone();
+            int[][] tmp = iterateCopy(blocks);
             exch(tmp, i, i + 1);
             Board right = new Board(tmp);
             System.out.println("Compare to original board:");
