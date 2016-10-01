@@ -25,9 +25,8 @@ import java.util.Arrays;
  * @author Michael <GrubenM@GMail.com>
  */
 public class Board {
-    private int n;
+    private final int n;
     private final int[][] blocks;
-    private final int[][] goal;
     // Consider adding a private int to store the location of the empty space
     
     /**
@@ -38,16 +37,6 @@ public class Board {
     public Board(int[][] blocks) {
         this.blocks = blocks;
         n = this.blocks.length;
-        
-        /**
-         * Initialize and populate the goal board
-         * Note that % (n * n) means that the last "block"
-         * to be added will be 0.
-         */
-        goal = new int[n][n];
-        for (int i = 0; i < n * n; i++) {
-            goal[i / n][i % n] = (i + 1) % (n * n);
-        }
     }
     
     // Board dimension n
@@ -82,12 +71,21 @@ public class Board {
     
     // Is this board the goal board?
     public boolean isGoal() {
+        /**
+         * Initialize and populate the goal board
+         * Note that % (n * n) means that the last "block"
+         * to be added will be 0.
+         */
+        int[][] goal = new int[n][n];
+        for (int i = 0; i < n * n; i++) {
+            goal[i / n][i % n] = (i + 1) % (n * n);
+        }
         return this.equals(new Board(goal));
     }
     
     // A board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        int[][] twin = blocks;
+        int[][] twin = iterateCopy(blocks);
         int i = 0;
         while (twin[i / n][i % n] == 0) i++;
         int j = i + 1;
@@ -215,6 +213,7 @@ public class Board {
         return s;
     }
     // string representation of this board (in the output format specified below)
+    @Override
     public String toString() {
         String ans = "";
         ans += n + "\n";
@@ -235,5 +234,10 @@ public class Board {
             for (int j = 0; j < n; j++)
                 blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
+        System.out.println(initial.toString());
+        Board twin = initial.twin();
+        System.out.println(twin.toString());
+        System.out.println(initial.isGoal());
+        System.out.println(twin.isGoal());
     }
 }

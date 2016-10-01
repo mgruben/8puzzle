@@ -25,28 +25,58 @@ import edu.princeton.cs.algs4.StdOut;
  * @author Michael <GrubenM@GMail.com>
  */
 public class Solver {
-    MinPQ<SearchNode> pq;
-    SearchNode current;
+    private final MinPQ<SearchNode> pq;
+    private SearchNode current;
+    private final MinPQ<SearchNode> pqTwin;
+    private SearchNode currentTwin;
+    private boolean solvable = false;
+    
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
+        
+        // Declare variables for given board
         current = new SearchNode(initial, null, 0);
         pq = new MinPQ<>();
         pq.insert(current);
-        while (!current.board.isGoal()) {
+        
+        // Declare variables for given board's twin
+        currentTwin = new SearchNode(initial.twin(), null, 0);
+        pqTwin = new MinPQ<>();
+        pqTwin.insert(currentTwin);
+        
+        // Look for a solution in either the given board or its twin
+        while (!current.board.isGoal() && !currentTwin.board.isGoal()) {
+            // Given board
             pq.delMin();
             for (Board neigh: current.board.neighbors()) {
                 if (neigh != current.board) {
                     pq.insert(new SearchNode(neigh, current, current.numMoves + 1));
                 }
             }
+            
+            // Its twin
+            pqTwin.delMin();
+            for (Board neigh: currentTwin.board.neighbors()) {
+                if (neigh != currentTwin.board) {
+                    pqTwin.insert(new SearchNode(
+                            neigh, currentTwin, currentTwin.numMoves + 1));
+                }
+            }
+            
+            // Update the given board's pq and its twin's pq
             current = pq.min();
+            currentTwin = pqTwin.min();
         }
+        /**
+         * Once we're out of the loop, we need only check whether the given
+         * board led to a solution to know whether the given board is solvable.
+         */
+        if (current.board.isGoal()) solvable = true;
     }
     
     // is the initial board solvable?
     public boolean isSolvable() {
-        // TODO
-        return true;
+        return solvable;
     }
     
     // min number of moves to solve initial board; -1 if unsolvable
@@ -61,10 +91,10 @@ public class Solver {
         
         // Store items in a stack, as per FAQ suggestion
         Stack s = new Stack();
-        SearchNode current = pq.min();
-        while (current != null) {
-            s.push(current.board);
-            current = current.previous;
+        SearchNode currentTail = pq.min();
+        while (currentTail != null) {
+            s.push(currentTail.board);
+            currentTail = currentTail.previous;
         }
         return s;
     }
