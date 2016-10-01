@@ -85,7 +85,7 @@ public class Board {
     
     // A board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        int[][] twin = blocks;
+        int[][] twin = iterateCopy(blocks);
         int i = 0;
         while (twin[i / n][i % n] == 0) i++;
         int j = i + 1;
