@@ -31,6 +31,11 @@ public class Solver {
     public Solver(Board initial) {
         pq.insert(initial);
         Board current = pq.min();
+        while (current != target) {
+            pq.delMin();
+            for (Board neigh: current.neighbors()) pq.insert(neigh);
+            current = pq.min();
+        }
     }
     
     // is the initial board solvable?
