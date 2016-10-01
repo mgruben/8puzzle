@@ -93,7 +93,7 @@ public class MinPQ<Key extends Comparable<Key>> {
         }
     }
     
-    // Return and remove the largest key
+    // Return and remove the smallest key
     public Key delMin() {
         Key min = pq[1];
         exch(1, size--);
