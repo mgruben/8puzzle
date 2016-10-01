@@ -48,7 +48,13 @@ public class Board {
     
     // Sum of Manhattan distances between blocks and goal
     public int manhattan() {
-        
+        int man = 0;
+        for (int i = 0; i < n * n; i++) {
+            int t = blocks[i / n][i % n]; // Store the entry at the index
+            man += Math.abs(((t - 1) / n) - (i / n)); // V-distance
+            man += Math.abs(((t - 1) % n) - (i % n)); // H-distance
+        }
+        return man;
     } 
     
     // Is this board the goal board?
