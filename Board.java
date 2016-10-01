@@ -21,14 +21,15 @@
  */
 public class Board {
     private int n;
-    
+    private int[][] blocks;
     /**
      * construct a board from an n-by-n array of blocks
      * (where blocks[i][j] = block in row i, column j).
      * @param blocks 
      */
     public Board(int[][] blocks) {
-        
+        this.blocks = blocks;
+        n = this.blocks.length;
     }
     
     // Board dimension n
@@ -38,7 +39,11 @@ public class Board {
     
     // Number of blocks out of place
     public int hamming() {
-        
+        int ham = 0;
+        for (int i = 0; i < n * n; i++) {
+            if (blocks[i / n][i % n] != i + 1) ham++;
+        }
+        return ham;
     }
     
     // Sum of Manhattan distances between blocks and goal
