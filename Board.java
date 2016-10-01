@@ -131,6 +131,23 @@ public class Board {
     }
     
     /**
+     * Swaps blocks at i and j, where i and j represent straight-line indices.
+     * 
+     * Ex. the straight-line indices of a 3x3 grid are as follows:
+     *   0 1 2
+     *   3 4 5
+     *   6 7 8
+     * Or, stated differently:
+     * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
+     */
+    private void exch(int[][] b, int i, int j) {
+        int len = b.length;
+        int tmp = b[i / len][i % len];
+        b[i / len][i % len] = b[j / len][j % len];
+        b[j / len][j % len] = tmp;
+    }
+    
+    /**
      * Copies the entries from o to c, and returns c.
      * This method presumes that o is a square array
      * (e.g. width = depth).
@@ -197,31 +214,27 @@ public class Board {
         else if (belowRow >= n) {
             validNeighbors[0][1] = false;
         }
-        
+        int tmp[][];
         // Construct new valid neighbors
         if (validNeighbors[0][0]) { // Check above
-            int[] tmp = iterateCopy(blocks);
+            tmp = toDoubleArray(blocks, n);
             exch(tmp, loc, loc - n);
-            Board above = new Board(toDoubleArray(tmp, n));
-            s.push(above);
+            s.push(new Board(tmp));
         }
         if (validNeighbors[0][1]) { // Check below
-            int[] tmp = iterateCopy(blocks);
+            tmp = toDoubleArray(blocks, n);
             exch(tmp, loc, loc + n);
-            Board below = new Board(toDoubleArray(tmp, n));
-            s.push(below);
+            s.push(new Board(tmp));
         }
         if (validNeighbors[1][0]) { // Check left
-            int[] tmp = iterateCopy(blocks);
+            tmp = toDoubleArray(blocks, n);
             exch(tmp, loc, loc - 1);
-            Board left = new Board(toDoubleArray(tmp, n));
-            s.push(left);
+            s.push(new Board(tmp));
         }
         if (validNeighbors[1][1]) { // Check right
-            int[] tmp = iterateCopy(blocks);
+            tmp = toDoubleArray(blocks, n);
             exch(tmp, loc, loc + 1);
-            Board right = new Board(toDoubleArray(tmp, n));
-            s.push(right);
+            s.push(new Board(tmp));
         }
         
         return s;
