@@ -166,7 +166,7 @@ public class Board {
     public Iterable<Board> neighbors() {
         Stack<Board> s = new Stack<>();
         
-        // locate the straight-line index of the empty space
+        // Calculate spatial variables for clarity
         int emptyCol = loc % n;
         int leftCol = emptyCol - 1;
         int rightCol = emptyCol + 1;
