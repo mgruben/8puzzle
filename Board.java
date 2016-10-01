@@ -212,6 +212,9 @@ public class Board {
                 blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
         
-        System.out.print(initial.toString());
+        System.out.println(initial.toString());
+        for (Board neighbor: initial.neighbors()) {
+            System.out.println(neighbor.toString());
+        }
     }
 }
