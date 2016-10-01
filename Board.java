@@ -26,7 +26,7 @@ import java.util.Arrays;
  */
 public class Board {
     private final int n;
-    private final int[] blocks;
+    private final char[] blocks;
     private int loc;
     
     /**
@@ -36,12 +36,12 @@ public class Board {
      */
     public Board(int[][] blocks) {
         n = blocks.length;
-        this.blocks = new int[n * n];
+        this.blocks = new char[n * n];
         for (int i = 0; i < n * n; i++) {
             if (blocks[i / n][i % n] == 0) {
                 loc = i;
             }
-            this.blocks[i] = blocks[i / n][i % n];
+            this.blocks[i] = (char) blocks[i / n][i % n];
         }
     }
     
@@ -89,7 +89,7 @@ public class Board {
     
     // A board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        int[] twin = iterateCopy(blocks);
+        char[] twin = iterateCopy(blocks);
         int i = 0;
         while (twin[i] == 0) i++;
         int j = i + 1;
@@ -126,8 +126,8 @@ public class Board {
      * 
      * This method is for 1-dimensional arrays.
      */
-    private void exch(int[] b, int i, int j) {
-        int tmp = b[i];
+    private void exch(char[] b, int i, int j) {
+        char tmp = b[i];
         b[i] = b[j];
         b[j] = tmp;
     }
@@ -158,8 +158,8 @@ public class Board {
      * @param o
      * @return 
      */
-    private int[] iterateCopy(int[] o) {
-        int[] c = new int[o.length];
+    private char[] iterateCopy(char[] o) {
+        char[] c = new char[o.length];
         for (int i = 0; i < o.length; i++) {
             c[i] = o[i];
         }
@@ -175,7 +175,7 @@ public class Board {
      * @param len
      * @return 
      */
-    private int[][] toDoubleArray(int[] o, int len) {
+    private int[][] toDoubleArray(char[] o, int len) {
         int[][] c = new int[len][len];
         for (int i = 0; i < o.length; i++) {
             c[i / n][i % n] = o[i];
@@ -229,7 +229,7 @@ public class Board {
         ans += n + "\n";
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                ans += String.format("%2d ", blocks[i + j]);
+                ans += String.format("%2d ", (int) blocks[i + j]);
             }
             ans += "\n";
         }
