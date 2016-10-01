@@ -79,16 +79,16 @@ public class MinPQ<Key extends Comparable<Key>> {
     }
     
     /**
-     * Given a key at index k, swaps the key with its largest descendants
+     * Given a key at index k, swaps the key with its smallest descendants
      * until the heap order is restored.
      * @param k 
      */
     private void sink(int k) {
         while (2 * k < size) {
             int j = 2 * k;
-            if (j < size && less(j, j + 1)) j++; // Choose larger child
-            if (!less(k, j)) break; // Check if further sink needed
-            exch(k, j); // swap this key with its larger child
+            if (j < size && greater(j, j + 1)) j++; // Choose smaller child
+            if (!greater(k, j)) break; // Check if further sink needed
+            exch(k, j); // swap this key with its smaller child
             k = j; // reorient to new location
         }
     }
