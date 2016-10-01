@@ -1,7 +1,9 @@
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
+import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
+import java.util.Iterator;
 
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
@@ -25,15 +27,20 @@ import edu.princeton.cs.algs4.StdOut;
  * @author Michael <GrubenM@GMail.com>
  */
 public class Solver {
-    MinPQ<Board> pq = new MinPQ<>();
-    
+    MinPQ<SearchNode> pq = new MinPQ<>();
+    SearchNode sn;
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
-        pq.insert(initial);
-        Board current = pq.min();
-        while (!current.isGoal()) {
+        sn = new SearchNode(initial, null, 0);
+        pq.insert(sn);
+        SearchNode current = pq.min();
+        while (!current.board.isGoal()) {
             pq.delMin();
-            for (Board neigh: current.neighbors()) pq.insert(neigh);
+            for (Board neigh: current.board.neighbors()) {
+                if (neigh != current.board) {
+                    pq.insert(new SearchNode(neigh, current, current.numMoves + 1));
+                }
+            }
             current = pq.min();
         }
     }
@@ -50,7 +57,31 @@ public class Solver {
     
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution() {
+        if (!isSolvable()) return null;
+        else return new BoardIterator();
+    }
+    
+    private class BoardIterator implements Iterator<Board> {
+        // Store items in a queue, as per FAQ suggestion
+        private final Stack s;
         
+        private BoardIterator() {
+            s.push(pq.min());
+            while (pq.min().previous != null) {
+                
+            }
+        }
+    }
+    
+    private class SearchNode {
+        Board board;
+        int numMoves;
+        SearchNode previous;
+        public SearchNode(Board current, SearchNode previous, int numMoves) {
+            this.board = current;
+            this.previous = previous;
+            this.numMoves = numMoves;
+        }
     }
     
     // solve a slider puzzle (given below)
