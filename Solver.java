@@ -30,7 +30,6 @@ public class Solver {
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
         current = new SearchNode(initial, null, 0);
-        System.out.println(current.board.toString());
         pq = new MinPQ<>();
         pq.insert(current);
         while (!current.board.isGoal()) {
@@ -41,7 +40,6 @@ public class Solver {
                 }
             }
             current = pq.min();
-            System.out.println(current.board.toString());
         }
     }
     

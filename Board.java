@@ -125,7 +125,6 @@ public class Board {
      * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
      */
     private void exch(int[][] b, int i, int j) {
-        System.out.println(new Board(b).toString());
         int len = b.length;
         int tmp = b[i / len][i % len];
         b[i / len][i % len] = b[j / len][j % len];
