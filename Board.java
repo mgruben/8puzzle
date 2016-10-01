@@ -191,47 +191,24 @@ public class Board {
         int aboveRow = emptyRow - 1;
         int belowRow = emptyRow + 1;
         
-        /**
-         * Given an empty space (x) within a grid, the following boolean array
-         * denotes which neighbors are valid:
-         *         0,0 
-         *    1,0   x   1,1
-         *         0,1 
-         */
-        
-        boolean[][] validNeighbors = new boolean[2][2];
-        for (boolean[] dimension: validNeighbors) Arrays.fill(dimension, true);
-        
-        if (leftCol < 0) {
-            validNeighbors[1][0] = false;
-        }
-        else if (rightCol >= n) {
-            validNeighbors[1][1] = false;
-        }
-        if (aboveRow < 0) {
-            validNeighbors[0][0] = false;
-        }
-        else if (belowRow >= n) {
-            validNeighbors[0][1] = false;
-        }
         int tmp[][];
         // Construct new valid neighbors
-        if (validNeighbors[0][0]) { // Check above
+        if (aboveRow >= 0) { // Check above
             tmp = toDoubleArray(blocks, n);
             exch(tmp, loc, loc - n);
             s.push(new Board(tmp));
         }
-        if (validNeighbors[0][1]) { // Check below
+        if (belowRow < n) { // Check below
             tmp = toDoubleArray(blocks, n);
             exch(tmp, loc, loc + n);
             s.push(new Board(tmp));
         }
-        if (validNeighbors[1][0]) { // Check left
+        if (leftCol >= 0) { // Check left
             tmp = toDoubleArray(blocks, n);
             exch(tmp, loc, loc - 1);
             s.push(new Board(tmp));
         }
-        if (validNeighbors[1][1]) { // Check right
+        if (rightCol < n) { // Check right
             tmp = toDoubleArray(blocks, n);
             exch(tmp, loc, loc + 1);
             s.push(new Board(tmp));
