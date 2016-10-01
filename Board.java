@@ -47,7 +47,7 @@ public class Board {
     // Number of blocks out of place
     public int hamming() {
         int ham = 0;
-        for (int i = 0; i < n * n; i++) {
+        for (int i = 0; i < n * n - 1; i++) {
             if (blocks[i / n][i % n] != (i + 1) % (n * n)) ham++;
         }
         return ham;
@@ -56,7 +56,7 @@ public class Board {
     // Sum of Manhattan distances between blocks and goal
     public int manhattan() {
         int man = 0;
-        for (int i = 0; i < n * n; i++) {
+        for (int i = 0; i < n * n - 1; i++) {
             int t = blocks[i / n][i % n]; // Store the entry at the index
             if (t == 0) t = n * n; // Handle the 0 block
             man += Math.abs(((t - 1) / n) - (i / n)); // V-distance
