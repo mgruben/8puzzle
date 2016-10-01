@@ -22,6 +22,7 @@
 public class Board {
     private int n;
     private int[][] blocks;
+    private int[][] goal = {{1,2,3},{4,5,6},{7,8,9}};
     /**
      * construct a board from an n-by-n array of blocks
      * (where blocks[i][j] = block in row i, column j).
@@ -59,7 +60,7 @@ public class Board {
     
     // Is this board the goal board?
     public boolean isGoal() {
-        
+        return blocks == goal;
     }
     // A board that is obtained by exchanging any pair of blocks
     public Board twin() {
