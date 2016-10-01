@@ -60,7 +60,7 @@ public class MinPQ<Key extends Comparable<Key>> {
          * Because of cleverness with integer division, each key's parent
          * can be found be dividing the key's index by two.
          */
-        while (k > 1 && less(k / 2, k)) {
+        while (k > 1 && greater(k / 2, k)) {
             exch(k, k / 2);
             k = k / 2;
         }
