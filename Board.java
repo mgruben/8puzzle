@@ -26,7 +26,7 @@ import java.util.Arrays;
  */
 public class Board {
     private final int n;
-    private final int[][] blocks;
+    private final int[] blocks;
     private int loc;
     
     /**
@@ -36,12 +36,12 @@ public class Board {
      */
     public Board(int[][] blocks) {
         n = blocks.length;
-        this.blocks = new int[n][n];
+        this.blocks = new int[n * n];
         for (int i = 0; i < n * n; i++) {
             if (blocks[i / n][i % n] == 0) {
                 loc = i;
             }
-            this.blocks[i / n][i % n] = blocks[i / n][i % n];
+            this.blocks[i] = blocks[i / n][i % n];
         }
     }
     
@@ -58,7 +58,7 @@ public class Board {
     public int hamming() {
         int ham = 0;
         for (int i = 0; i < n * n - 1; i++) {
-            if (blocks[i / n][i % n] != (i + 1) % (n * n)) ham++;
+            if (blocks[i] != (i + 1) % (n * n)) ham++;
         }
         return ham;
     }
@@ -67,7 +67,7 @@ public class Board {
     public int manhattan() {
         int man = 0;
         for (int i = 0; i < n * n - 1; i++) {
-            int t = blocks[i / n][i % n]; // Store the entry at the index
+            int t = blocks[i]; // Store the entry at the index
             if (t == 0) t = n * n; // Handle the 0 block
             man += Math.abs(((t - 1) / n) - (i / n)); // V-distance
             man += Math.abs(((t - 1) % n) - (i % n)); // H-distance
@@ -82,20 +82,20 @@ public class Board {
          * for each index i.
          */
         for (int i = 0; i < n * n; i++) {
-            if (blocks[i / n][i % n] != (i + 1) % (n * n)) return false;
+            if (blocks[i] != (i + 1) % (n * n)) return false;
         }
         return true;
     }
     
     // A board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        int[][] twin = iterateCopy(blocks);
+        int[] twin = iterateCopy(blocks);
         int i = 0;
-        while (twin[i / n][i % n] == 0) i++;
+        while (twin[i] == 0) i++;
         int j = i + 1;
-        while (twin[j / n][j % n] == 0) j++;
+        while (twin[j] == 0) j++;
         exch(twin, i, j);
-        return new Board(twin);
+        return new Board(toDoubleArray(twin, n));
     }
     
     // Does this board equal y?
@@ -108,10 +108,8 @@ public class Board {
         
         // Cast and compare blocks
         Board x = (Board) y;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (this.blocks[i][j] != x.blocks[i][j]) return false;
-            }
+        for (int i = 0; i < n * n; i++) {
+            if (this.blocks[i] != x.blocks[i]) return false;
         }
         return true;
     }
@@ -126,11 +124,11 @@ public class Board {
      * Or, stated differently:
      * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
      */
-    private void exch(int[][] b, int i, int j) {
+    private void exch(int[] b, int i, int j) {
         int len = b.length;
-        int tmp = b[i / len][i % len];
-        b[i / len][i % len] = b[j / len][j % len];
-        b[j / len][j % len] = tmp;
+        int tmp = b[i];
+        b[i] = b[j];
+        b[j] = tmp;
     }
     
     /**
@@ -140,12 +138,18 @@ public class Board {
      * @param o
      * @return 
      */
-    private int[][] iterateCopy(int[][] o) {
-        int[][] c = new int[o.length][o.length];
+    private int[] iterateCopy(int[] o) {
+        int[] c = new int[o.length];
         for (int i = 0; i < o.length; i++) {
-            for (int j = 0; j < o.length; j++) {
-                c[i][j] = o[i][j];
-            }
+            c[i] = o[i];
+        }
+        return c;
+    }
+    
+    private int[][] toDoubleArray(int[] o, int len) {
+        int[][] c = new int[len][len];
+        for (int i = 0; i < o.length; i++) {
+            c[i / n][i % n] = o[i];
         }
         return c;
     }
@@ -188,27 +192,27 @@ public class Board {
         
         // Construct new valid neighbors
         if (validNeighbors[0][0]) { // Check above
-            int[][] tmp = iterateCopy(blocks);
+            int[] tmp = iterateCopy(blocks);
             exch(tmp, loc, loc - n);
-            Board above = new Board(tmp);
+            Board above = new Board(toDoubleArray(tmp, n));
             s.push(above);
         }
         if (validNeighbors[0][1]) { // Check below
-            int[][] tmp = iterateCopy(blocks);
+            int[] tmp = iterateCopy(blocks);
             exch(tmp, loc, loc + n);
-            Board below = new Board(tmp);
+            Board below = new Board(toDoubleArray(tmp, n));
             s.push(below);
         }
         if (validNeighbors[1][0]) { // Check left
-            int[][] tmp = iterateCopy(blocks);
+            int[] tmp = iterateCopy(blocks);
             exch(tmp, loc, loc - 1);
-            Board left = new Board(tmp);
+            Board left = new Board(toDoubleArray(tmp, n));
             s.push(left);
         }
         if (validNeighbors[1][1]) { // Check right
-            int[][] tmp = iterateCopy(blocks);
+            int[] tmp = iterateCopy(blocks);
             exch(tmp, loc, loc + 1);
-            Board right = new Board(tmp);
+            Board right = new Board(toDoubleArray(tmp, n));
             s.push(right);
         }
         
@@ -221,7 +225,7 @@ public class Board {
         ans += n + "\n";
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                ans += String.format("%2d ", blocks[i][j]);
+                ans += String.format("%2d ", blocks[i + j]);
             }
             ans += "\n";
         }
