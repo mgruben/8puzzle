@@ -82,12 +82,7 @@ public class Board {
     
     // Is this board the goal board?
     public boolean isGoal() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (blocks[i][j] != goal[i][j]) return false;
-            }
-        }
-        return true;
+        return this.equals(new Board(goal));
     }
     
     // A board that is obtained by exchanging any pair of blocks
@@ -111,7 +106,12 @@ public class Board {
         
         // Cast and compare blocks
         Board x = (Board) y;
-        return (this.blocks == x.blocks);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (this.blocks[i][j] != x.blocks[i][j]) return false;
+            }
+        }
+        return true;
     }
     
     /**
