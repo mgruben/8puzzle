@@ -1,4 +1,5 @@
 
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
 import java.util.Arrays;
 
@@ -203,6 +204,14 @@ public class Board {
     }
     // unit tests (not graded)
     public static void main(String[] args) {
+        In in = new In("tests-8puzzle/puzzle04.txt");
+        int n = in.readInt();
+        int[][] blocks = new int[n][n];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                blocks[i][j] = in.readInt();
+        Board initial = new Board(blocks);
         
+        System.out.print(initial.toString());
     }
 }
