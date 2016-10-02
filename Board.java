@@ -236,7 +236,7 @@ public class Board {
      * @return 
      */
     private Board newNeighbor(int toBeEmpty) {
-        int tmp[][] = toDoubleArray(blocks, n);
+        int[][] tmp = toDoubleArray(blocks, n);
         exch(tmp, loc, toBeEmpty);
         return new Board(tmp);
     }
