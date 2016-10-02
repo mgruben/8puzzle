@@ -27,7 +27,7 @@ import edu.princeton.cs.algs4.StdOut;
 public class Solver {
     private final MinPQ<SearchNode> pq;
     private SearchNode current;
-    private boolean solvable = false;
+    private boolean solvable;
     
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
@@ -36,7 +36,7 @@ public class Solver {
         current = new SearchNode(initial, null, 0);
         pq = new MinPQ<>();
         pq.insert(current);
-        
+        solvable = false;
         /**
          * Also insert the given board's twin, because we know that exactly
          * one of them will be solvable.
