@@ -37,7 +37,7 @@ public class Board {
      */
     public Board(int[][] blocks) {
         if (blocks == null) throw new NullPointerException();
-        manhattanDistance = -1;
+        manhattanDistance = 0;
         n = blocks.length;
         this.blocks = new char[n * n];
         for (int i = 0; i < n * n; i++) {
@@ -45,6 +45,14 @@ public class Board {
                 loc = i;
             }
             this.blocks[i] = (char) blocks[i / n][i % n];
+            int t = this.blocks[i]; // Store the entry as we may need to mutate.
+            if (t == 0) t = n * n; // Handle the 0 block
+            
+            // Calculate vertical distance
+            manhattanDistance += Math.abs(((t - 1) / n) - (i / n));
+            
+            // Calculate horizontal distance
+            manhattanDistance += Math.abs(((t - 1) % n) - (i % n));
         }
     }
     
@@ -68,14 +76,6 @@ public class Board {
     
     // Sum of Manhattan distances between blocks and goal
     public int manhattan() {
-        if (manhattanDistance != -1) return manhattanDistance;
-        manhattanDistance = 0;
-        for (int i = 0; i < n * n - 1; i++) {
-            int t = blocks[i]; // Store the entry at the index
-            if (t == 0) t = n * n; // Handle the 0 block
-            manhattanDistance += Math.abs(((t - 1) / n) - (i / n)); // V-distance
-            manhattanDistance += Math.abs(((t - 1) % n) - (i % n)); // H-distance
-        }
         return manhattanDistance;
     } 
     
