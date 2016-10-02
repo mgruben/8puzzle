@@ -43,17 +43,17 @@ public class Solver {
          */
         pq.insert(new SearchNode(initial.twin(), null, 0));
         
-        // Look for a solution in either the given board or its twin
+        /**
+         * Look for a solution,
+         * whether descended from the given board or its twin.
+         */
         while (!current.board.isGoal()) {
-            // Given board
             pq.delMin();
             for (Board neigh: current.board.neighbors()) {
                 if (current.previous == null || !neigh.equals(current.previous.board)) {
                     pq.insert(new SearchNode(neigh, current, current.numMoves + 1));
                 }
             }
-            
-            // Update the given board's pq
             current = pq.min();
         }
         /**
@@ -116,7 +116,7 @@ public class Solver {
     
     // solve a slider puzzle (given below)
     public static void main(String[] args) {
-        In in = new In("tests-8puzzle/puzzle28.txt");
+        In in = new In("tests-8puzzle/puzzle2x2-unsolvable1.txt");
         int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
