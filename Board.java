@@ -28,7 +28,7 @@ public class Board {
     private final int n;
     private final char[] blocks;
     private int loc;
-    private int manhattanDistance = -1;
+    private int manhattanDistance;
     
     /**
      * construct a board from an n-by-n array of blocks
@@ -37,6 +37,7 @@ public class Board {
      */
     public Board(int[][] blocks) {
         if (blocks == null) throw new NullPointerException();
+        manhattanDistance = -1;
         n = blocks.length;
         this.blocks = new char[n * n];
         for (int i = 0; i < n * n; i++) {
