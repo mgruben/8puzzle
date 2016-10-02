@@ -51,17 +51,7 @@ public class Board {
             
             if (t == 0) {
                 loc = i; // We found the zero block, store its location
-                /**
-                 * Mutate t for Manhattan Distance calculations.
-                 * Specifically, the zero block in a solved board is on the last
-                 * row and the last column, which is the n*n - 1 index,
-                 * and thus we would expect to a value of n*n.
-                 * 
-                 * Changing this one tmp instance is computationally simpler
-                 * than is using %(n*n) in both of the below calculations to
-                 * compare the expected value with the actual value.
-                 */
-                t = n * n;
+                continue; // The zero block doesn't count for Distance
             }
             
             // Calculate vertical distance
