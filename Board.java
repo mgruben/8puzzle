@@ -196,16 +196,16 @@ public class Board {
         int emptyRow = loc / n;
 
         // Construct new valid neighbors
-        if (emptyRow - 1 >= 0) { // Check above
+        if (emptyRow - 1 >= 0) { // Empty space filled from above
             s.push(newNeighbor(loc - n));
         }
-        if (emptyRow + 1 < n) { // Check below
+        if (emptyRow + 1 < n) { // Empty space filled from below
             s.push(newNeighbor(loc + n));
         }
-        if (emptyCol - 1 >= 0) { // Check left
+        if (emptyCol - 1 >= 0) { // Empty space filled from the left
             s.push(newNeighbor(loc - 1));
         }
-        if (emptyCol + 1 < n) { // Check right
+        if (emptyCol + 1 < n) { // Empty space filled from the right
             s.push(newNeighbor(loc + 1));
         }
         
