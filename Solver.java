@@ -48,7 +48,7 @@ public class Solver {
             // Given board
             pq.delMin();
             for (Board neigh: current.board.neighbors()) {
-                if (current.previous == null || neigh != current.previous.board) {
+                if (current.previous == null || !neigh.equals(current.previous.board)) {
                     pq.insert(new SearchNode(neigh, current, current.numMoves + 1));
                 }
             }
