@@ -27,8 +27,6 @@ import edu.princeton.cs.algs4.StdOut;
 public class Solver {
     private final MinPQ<SearchNode> pq;
     private SearchNode current;
-    private final MinPQ<SearchNode> pqTwin;
-    private SearchNode currentTwin;
     private boolean solvable = false;
     
     // find a solution to the initial board (using the A* algorithm)
@@ -39,13 +37,14 @@ public class Solver {
         pq = new MinPQ<>();
         pq.insert(current);
         
-        // Declare variables for given board's twin
-        currentTwin = new SearchNode(initial.twin(), null, 0);
-        pqTwin = new MinPQ<>();
-        pqTwin.insert(currentTwin);
+        /**
+         * Also insert the given board's twin, because we know that exactly
+         * one of them will be solvable.
+         */
+        pq.insert(new SearchNode(initial.twin(), null, 0));
         
         // Look for a solution in either the given board or its twin
-        while (!current.board.isGoal() && !currentTwin.board.isGoal()) {
+        while (!current.board.isGoal()) {
             // Given board
             pq.delMin();
             for (Board neigh: current.board.neighbors()) {
@@ -54,27 +53,22 @@ public class Solver {
                 }
             }
             
-            // Its twin
-            pqTwin.delMin();
-            for (Board neigh: currentTwin.board.neighbors()) {
-                if (neigh != currentTwin.board) {
-                    pqTwin.insert(new SearchNode(
-                            neigh, currentTwin, currentTwin.numMoves + 1));
-                }
-            }
-            
-            // Update the given board's pq and its twin's pq
+            // Update the given board's pq
             current = pq.min();
-            currentTwin = pqTwin.min();
         }
         /**
          * Once we're out of the loop (that is, either the board or its twin was
-         * solved), we need only check whether the given board was the one that
+         * solved), we need to check whether the given board was the one that
          * led to the solution.
-         * If so, the given board is solvable.
-         * If not, the given board is not solvable.
+         * 
+         * To do this, we follow the chain from the current node (the solution)
+         * back to its ancestor.
+         * If and only if that ancestor is the initial board,
+         * then the initial board is solvable.
          */
-        if (current.board.isGoal()) solvable = true;
+        SearchNode tmp = current;
+        while (tmp.previous != null) tmp = tmp.previous;
+        if (tmp.board.equals(initial)) solvable = true;
     }
     
     // is the initial board solvable?
@@ -93,7 +87,7 @@ public class Solver {
         if (!isSolvable()) return null;
         
         // Store items in a stack, as per FAQ suggestion
-        Stack s = new Stack();
+        Stack<Board> s = new Stack<>();
         SearchNode currentTail = pq.min();
         while (currentTail != null) {
             s.push(currentTail.board);
@@ -122,7 +116,7 @@ public class Solver {
     
     // solve a slider puzzle (given below)
     public static void main(String[] args) {
-        In in = new In("tests-8puzzle/puzzle3x3-17.txt");
+        In in = new In("tests-8puzzle/puzzle3x3-20.txt");
         int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
