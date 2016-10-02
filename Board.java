@@ -87,14 +87,7 @@ public class Board {
     
     // Is this board the goal board?
     public boolean isGoal() {
-        /**
-         * Note that the "goal board" has entries of (i + 1) % (n * n)
-         * for each index i.
-         */
-        for (int i = 0; i < n * n; i++) {
-            if (blocks[i] != (i + 1) % (n * n)) return false;
-        }
-        return true;
+        return manhattanDistance == 0;
     }
     
     // A board that is obtained by exchanging any pair of blocks
