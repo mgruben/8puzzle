@@ -36,10 +36,14 @@ public class Board {
      * @param blocks 
      */
     public Board(int[][] blocks) {
+        // Check for bad input
         if (blocks == null) throw new NullPointerException();
+        
+        // Initializations
         manhattanDistance = 0;
         n = blocks.length;
         this.blocks = new char[n * n]; // Use a 1-dimensional array
+        
         for (int i = 0; i < n * n; i++) {
             this.blocks[i] = (char) blocks[i / n][i % n]; // Store entry
             
