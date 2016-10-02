@@ -97,9 +97,9 @@ public class Solver {
     }
     
     private class SearchNode implements Comparable<SearchNode> {
-        Board board;
-        int numMoves;
-        SearchNode previous;
+        private Board board;
+        private int numMoves;
+        private SearchNode previous;
         
         public SearchNode(Board current, SearchNode previous, int numMoves) {
             this.board = current;
