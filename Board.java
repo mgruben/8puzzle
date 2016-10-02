@@ -45,20 +45,17 @@ public class Board {
         
         for (int i = 0; i < n * n; i++) {
             this.blocks[i] = (char) blocks[i / n][i % n]; // Store entry
-            
-            // Store as tmp as we may need to mutate for Manhattan Distance
-            int t = this.blocks[i]; 
-            
-            if (t == 0) {
+
+            if (this.blocks[i] == 0) {
                 loc = i; // We found the zero block, store its location
                 continue; // The zero block doesn't count for Distance
             }
             
             // Calculate vertical distance
-            manhattanDistance += Math.abs(((t - 1) / n) - (i / n));
+            manhattanDistance += Math.abs(((this.blocks[i] - 1) / n) - (i / n));
             
             // Calculate horizontal distance
-            manhattanDistance += Math.abs(((t - 1) % n) - (i % n));
+            manhattanDistance += Math.abs(((this.blocks[i] - 1) % n) - (i % n));
         }
     }
     
