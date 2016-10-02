@@ -68,8 +68,11 @@ public class Solver {
             currentTwin = pqTwin.min();
         }
         /**
-         * Once we're out of the loop, we need only check whether the given
-         * board led to a solution to know whether the given board is solvable.
+         * Once we're out of the loop (that is, either the board or its twin was
+         * solved), we need only check whether the given board was the one that
+         * led to the solution.
+         * If so, the given board is solvable.
+         * If not, the given board is not solvable.
          */
         if (current.board.isGoal()) solvable = true;
     }
