@@ -109,8 +109,8 @@ public class Solver {
         
         @Override
         public int compareTo(SearchNode that) {
-            return Integer.valueOf(board.manhattan() + numMoves)
-                    .compareTo(that.board.manhattan() + that.numMoves);
+            return Integer.compare(board.manhattan() + numMoves,
+                    that.board.manhattan() + that.numMoves);
         }
     }
     
