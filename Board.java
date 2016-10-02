@@ -191,7 +191,6 @@ public class Board {
         int emptyCol = loc % n;
         int emptyRow = loc / n;
 
-        int tmp[][];
         // Construct new valid neighbors
         if (emptyRow - 1 >= 0) { // Check above
             s.push(newNeighbor(loc - n));
