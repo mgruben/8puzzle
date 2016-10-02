@@ -88,7 +88,7 @@ public class Solver {
         
         // Store items in a stack, as per FAQ suggestion
         Stack<Board> s = new Stack<>();
-        SearchNode currentTail = pq.min();
+        SearchNode currentTail = current;
         while (currentTail != null) {
             s.push(currentTail.board);
             currentTail = currentTail.previous;
