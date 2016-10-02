@@ -229,7 +229,7 @@ public class Board {
         ans += n + "\n";
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                ans += String.format("%2d ", (int) blocks[i + j]);
+                ans += String.format("%2d ", (int) blocks[i*n + j]);
             }
             ans += "\n";
         }
