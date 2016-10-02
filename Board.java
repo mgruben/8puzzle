@@ -238,6 +238,7 @@ public class Board {
         }
         return s.toString();
     }
+    
     // unit tests (not graded)
     public static void main(String[] args) {
         In in = new In("tests-8puzzle/puzzle3x3-unsolvable1.txt");
