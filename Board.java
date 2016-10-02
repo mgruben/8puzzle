@@ -39,14 +39,27 @@ public class Board {
         if (blocks == null) throw new NullPointerException();
         manhattanDistance = 0;
         n = blocks.length;
-        this.blocks = new char[n * n];
+        this.blocks = new char[n * n]; // Use a 1-dimensional array
         for (int i = 0; i < n * n; i++) {
-            if (blocks[i / n][i % n] == 0) {
-                loc = i;
+            this.blocks[i] = (char) blocks[i / n][i % n]; // Store entry
+            
+            // Store as tmp as we may need to mutate for Manhattan Distance
+            int t = this.blocks[i]; 
+            
+            if (t == 0) {
+                loc = i; // We found the zero block, store its location
+                /**
+                 * Mutate t for Manhattan Distance calculations.
+                 * Specifically, the zero block in a solved board is on the last
+                 * row and the last column, which is the n*n - 1 index,
+                 * and thus we would expect to a value of n*n.
+                 * 
+                 * Changing this one tmp instance is computationally simpler
+                 * than is using %(n*n) in both of the below calculations to
+                 * compare the expected value with the actual value.
+                 */
+                t = n * n;
             }
-            this.blocks[i] = (char) blocks[i / n][i % n];
-            int t = this.blocks[i]; // Store the entry as we may need to mutate.
-            if (t == 0) t = n * n; // Handle the 0 block
             
             // Calculate vertical distance
             manhattanDistance += Math.abs(((t - 1) / n) - (i / n));
