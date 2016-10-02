@@ -1,7 +1,6 @@
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
-import java.util.Arrays;
 
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
