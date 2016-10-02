@@ -48,7 +48,7 @@ public class Solver {
             // Given board
             pq.delMin();
             for (Board neigh: current.board.neighbors()) {
-                if (neigh != current.board) {
+                if (current.previous == null || neigh != current.previous.board) {
                     pq.insert(new SearchNode(neigh, current, current.numMoves + 1));
                 }
             }
@@ -116,7 +116,7 @@ public class Solver {
     
     // solve a slider puzzle (given below)
     public static void main(String[] args) {
-        In in = new In("tests-8puzzle/puzzle3x3-20.txt");
+        In in = new In("tests-8puzzle/puzzle28.txt");
         int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
