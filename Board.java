@@ -115,9 +115,14 @@ public class Board {
         if (y == null) return false; // Handle null comparison
         if (y.getClass() != this.getClass()) return false; // not even the same
                                                            // class
-        
+
         // Cast and compare blocks
         Board x = (Board) y;
+        
+        // Handle boards of different sizes
+        if (this.n != x.n) return false;
+        
+        // Element-by-element comparison
         for (int i = 0; i < n * n; i++) {
             if (this.blocks[i] != x.blocks[i]) return false;
         }
