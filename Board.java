@@ -28,6 +28,7 @@ public class Board {
     private final int n;
     private final char[] blocks;
     private int loc;
+    private int manhattanDistance = -1;
     
     /**
      * construct a board from an n-by-n array of blocks
@@ -66,14 +67,15 @@ public class Board {
     
     // Sum of Manhattan distances between blocks and goal
     public int manhattan() {
-        int man = 0;
+        if (manhattanDistance != -1) return manhattanDistance;
+        manhattanDistance = 0;
         for (int i = 0; i < n * n - 1; i++) {
             int t = blocks[i]; // Store the entry at the index
             if (t == 0) t = n * n; // Handle the 0 block
-            man += Math.abs(((t - 1) / n) - (i / n)); // V-distance
-            man += Math.abs(((t - 1) % n) - (i % n)); // H-distance
+            manhattanDistance += Math.abs(((t - 1) / n) - (i / n)); // V-distance
+            manhattanDistance += Math.abs(((t - 1) % n) - (i % n)); // H-distance
         }
-        return man;
+        return manhattanDistance;
     } 
     
     // Is this board the goal board?
