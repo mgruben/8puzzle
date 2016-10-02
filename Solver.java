@@ -87,7 +87,7 @@ public class Solver {
         if (!isSolvable()) return null;
         
         // Store items in a stack, as per FAQ suggestion
-        Stack s = new Stack();
+        Stack<Board> s = new Stack<>();
         SearchNode currentTail = pq.min();
         while (currentTail != null) {
             s.push(currentTail.board);
