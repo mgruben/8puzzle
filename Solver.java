@@ -68,8 +68,11 @@ public class Solver {
             currentTwin = pqTwin.min();
         }
         /**
-         * Once we're out of the loop, we need only check whether the given
-         * board led to a solution to know whether the given board is solvable.
+         * Once we're out of the loop (that is, either the board or its twin was
+         * solved), we need only check whether the given board was the one that
+         * led to the solution.
+         * If so, the given board is solvable.
+         * If not, the given board is not solvable.
          */
         if (current.board.isGoal()) solvable = true;
     }
@@ -112,14 +115,14 @@ public class Solver {
         
         @Override
         public int compareTo(SearchNode that) {
-            return Integer.valueOf(board.hamming() + numMoves)
-                    .compareTo(that.board.hamming() + that.numMoves);
+            return Integer.valueOf(board.manhattan() + numMoves)
+                    .compareTo(that.board.manhattan() + that.numMoves);
         }
     }
     
     // solve a slider puzzle (given below)
     public static void main(String[] args) {
-        In in = new In("tests-8puzzle/puzzle04.txt");
+        In in = new In("tests-8puzzle/puzzle3x3-17.txt");
         int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)

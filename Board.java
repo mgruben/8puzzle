@@ -26,8 +26,9 @@ import java.util.Arrays;
  */
 public class Board {
     private final int n;
-    private final int[][] blocks;
-    // Consider adding a private int to store the location of the empty space
+    private final char[] blocks;
+    private int loc;
+    private int manhattanDistance;
     
     /**
      * construct a board from an n-by-n array of blocks
@@ -35,8 +36,16 @@ public class Board {
      * @param blocks 
      */
     public Board(int[][] blocks) {
-        this.blocks = blocks;
-        n = this.blocks.length;
+        if (blocks == null) throw new NullPointerException();
+        manhattanDistance = -1;
+        n = blocks.length;
+        this.blocks = new char[n * n];
+        for (int i = 0; i < n * n; i++) {
+            if (blocks[i / n][i % n] == 0) {
+                loc = i;
+            }
+            this.blocks[i] = (char) blocks[i / n][i % n];
+        }
     }
     
     // Board dimension n
@@ -52,46 +61,45 @@ public class Board {
     public int hamming() {
         int ham = 0;
         for (int i = 0; i < n * n - 1; i++) {
-            if (blocks[i / n][i % n] != (i + 1) % (n * n)) ham++;
+            if (blocks[i] != (i + 1) % (n * n)) ham++;
         }
         return ham;
     }
     
     // Sum of Manhattan distances between blocks and goal
     public int manhattan() {
-        int man = 0;
+        if (manhattanDistance != -1) return manhattanDistance;
+        manhattanDistance = 0;
         for (int i = 0; i < n * n - 1; i++) {
-            int t = blocks[i / n][i % n]; // Store the entry at the index
+            int t = blocks[i]; // Store the entry at the index
             if (t == 0) t = n * n; // Handle the 0 block
-            man += Math.abs(((t - 1) / n) - (i / n)); // V-distance
-            man += Math.abs(((t - 1) % n) - (i % n)); // H-distance
+            manhattanDistance += Math.abs(((t - 1) / n) - (i / n)); // V-distance
+            manhattanDistance += Math.abs(((t - 1) % n) - (i % n)); // H-distance
         }
-        return man;
+        return manhattanDistance;
     } 
     
     // Is this board the goal board?
     public boolean isGoal() {
         /**
-         * Initialize and populate the goal board
-         * Note that % (n * n) means that the last "block"
-         * to be added will be 0.
+         * Note that the "goal board" has entries of (i + 1) % (n * n)
+         * for each index i.
          */
-        int[][] goal = new int[n][n];
         for (int i = 0; i < n * n; i++) {
-            goal[i / n][i % n] = (i + 1) % (n * n);
+            if (blocks[i] != (i + 1) % (n * n)) return false;
         }
-        return this.equals(new Board(goal));
+        return true;
     }
     
     // A board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        int[][] twin = iterateCopy(blocks);
+        char[] twin = iterateCopy(blocks);
         int i = 0;
-        while (twin[i / n][i % n] == 0) i++;
+        while (twin[i] == 0) i++;
         int j = i + 1;
-        while (twin[j / n][j % n] == 0) j++;
+        while (twin[j] == 0) j++;
         exch(twin, i, j);
-        return new Board(twin);
+        return new Board(toDoubleArray(twin, n));
     }
     
     // Does this board equal y?
@@ -104,10 +112,8 @@ public class Board {
         
         // Cast and compare blocks
         Board x = (Board) y;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (this.blocks[i][j] != x.blocks[i][j]) return false;
-            }
+        for (int i = 0; i < n * n; i++) {
+            if (this.blocks[i] != x.blocks[i]) return false;
         }
         return true;
     }
@@ -121,6 +127,26 @@ public class Board {
      *   6 7 8
      * Or, stated differently:
      * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
+     * 
+     * This method is for 1-dimensional arrays.
+     */
+    private void exch(char[] b, int i, int j) {
+        char tmp = b[i];
+        b[i] = b[j];
+        b[j] = tmp;
+    }
+    
+    /**
+     * Swaps blocks at i and j, where i and j represent straight-line indices.
+     * 
+     * Ex. the straight-line indices of a 3x3 grid are as follows:
+     *   0 1 2
+     *   3 4 5
+     *   6 7 8
+     * Or, stated differently:
+     * [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2), (2,0), (2,1), (2,2)]
+     * 
+     * This method is for 2-dimensional arrays.
      */
     private void exch(int[][] b, int i, int j) {
         int len = b.length;
@@ -136,12 +162,27 @@ public class Board {
      * @param o
      * @return 
      */
-    private int[][] iterateCopy(int[][] o) {
-        int[][] c = new int[o.length][o.length];
+    private char[] iterateCopy(char[] o) {
+        char[] c = new char[o.length];
         for (int i = 0; i < o.length; i++) {
-            for (int j = 0; j < o.length; j++) {
-                c[i][j] = o[i][j];
-            }
+            c[i] = o[i];
+        }
+        return c;
+    }
+    
+    /**
+     * Copies the entries from o to c, where o is a 1d array, and c is a 2d
+     * array, and returns c.
+     * This method presumes that o is a square array
+     * (e.g. width = depth).
+     * @param o
+     * @param len
+     * @return 
+     */
+    private int[][] toDoubleArray(char[] o, int len) {
+        int[][] c = new int[len][len];
+        for (int i = 0; i < o.length; i++) {
+            c[i / n][i % n] = o[i];
         }
         return c;
     }
@@ -150,84 +191,56 @@ public class Board {
     public Iterable<Board> neighbors() {
         Stack<Board> s = new Stack<>();
         
-        // locate the straight-line index of the empty space
-        int i = 0;
-        while (blocks[i / n][i % n] != 0) i++;
-        int emptyCol = i % n;
-        int leftCol = emptyCol - 1;
-        int rightCol = emptyCol + 1;
-        int emptyRow = i / n;
-        int aboveRow = emptyRow - 1;
-        int belowRow = emptyRow + 1;
-        
-        /**
-         * Given an empty space (x) within a grid, the following boolean array
-         * denotes which neighbors are valid:
-         *         0,0 
-         *    1,0   x   1,1
-         *         0,1 
-         */
-        
-        boolean[][] validNeighbors = new boolean[2][2];
-        for (boolean[] dimension: validNeighbors) Arrays.fill(dimension, true);
-        
-        if (leftCol < 0) {
-            validNeighbors[1][0] = false;
-        }
-        else if (rightCol >= n) {
-            validNeighbors[1][1] = false;
-        }
-        if (aboveRow < 0) {
-            validNeighbors[0][0] = false;
-        }
-        else if (belowRow >= n) {
-            validNeighbors[0][1] = false;
-        }
-        
+        // Calculate spatial variables for clarity
+        int emptyCol = loc % n;
+        int emptyRow = loc / n;
+
         // Construct new valid neighbors
-        if (validNeighbors[0][0]) { // Check above
-            int[][] tmp = iterateCopy(blocks);
-            exch(tmp, i, i - n);
-            Board above = new Board(tmp);
-            s.push(above);
+        if (emptyRow - 1 >= 0) { // Check above
+            s.push(newNeighbor(loc - n));
         }
-        if (validNeighbors[0][1]) { // Check below
-            int[][] tmp = iterateCopy(blocks);
-            exch(tmp, i, i + n);
-            Board below = new Board(tmp);
-            s.push(below);
+        if (emptyRow + 1 < n) { // Check below
+            s.push(newNeighbor(loc + n));
         }
-        if (validNeighbors[1][0]) { // Check left
-            int[][] tmp = iterateCopy(blocks);
-            exch(tmp, i, i - 1);
-            Board left = new Board(tmp);
-            s.push(left);
+        if (emptyCol - 1 >= 0) { // Check left
+            s.push(newNeighbor(loc - 1));
         }
-        if (validNeighbors[1][1]) { // Check right
-            int[][] tmp = iterateCopy(blocks);
-            exch(tmp, i, i + 1);
-            Board right = new Board(tmp);
-            s.push(right);
+        if (emptyCol + 1 < n) { // Check right
+            s.push(newNeighbor(loc + 1));
         }
         
         return s;
     }
+    
+    /**
+     * Given the 1-dimensional index of the location from which to move
+     * the next block, moves the block at that index into the empty space,
+     * and returns a new Board representing that movement.
+     * @param toBeEmpty
+     * @return 
+     */
+    private Board newNeighbor(int toBeEmpty) {
+        int tmp[][] = toDoubleArray(blocks, n);
+        exch(tmp, loc, toBeEmpty);
+        return new Board(tmp);
+    }
+    
     // string representation of this board (in the output format specified below)
     @Override
     public String toString() {
-        String ans = "";
-        ans += n + "\n";
+        StringBuilder s = new StringBuilder();
+        s.append(n + "\n");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                ans += String.format("%2d ", blocks[i][j]);
+                s.append(String.format("%2d ", (int) blocks[i*n + j]));
             }
-            ans += "\n";
+            s.append("\n");
         }
-        return ans;
+        return s.toString();
     }
     // unit tests (not graded)
     public static void main(String[] args) {
-        In in = new In("tests-8puzzle/puzzle04.txt");
+        In in = new In("tests-8puzzle/puzzle3x3-unsolvable1.txt");
         int n = in.readInt();
         int[][] blocks = new int[n][n];
         for (int i = 0; i < n; i++)
