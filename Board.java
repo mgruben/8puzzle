@@ -35,6 +35,7 @@ public class Board {
      * @param blocks 
      */
     public Board(int[][] blocks) {
+        if (blocks == null) throw new NullPointerException();
         n = blocks.length;
         this.blocks = new char[n * n];
         for (int i = 0; i < n * n; i++) {
