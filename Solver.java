@@ -33,15 +33,18 @@ public class Solver {
     public Solver(Board initial) {
         
         // Declare variables for given board
-        current = new SearchNode(initial, null, 0);
         pq = new MinPQ<>();
-        pq.insert(current);
         solvable = false;
         /**
-         * Also insert the given board's twin, because we know that exactly
+         * Insert the given board and its twin, because we know that exactly
          * one of them will be solvable.
          */
+        pq.insert(new SearchNode(initial, null, 0));
         pq.insert(new SearchNode(initial.twin(), null, 0));
+        
+        
+        // Initialize current
+        current = pq.min();
         
         /**
          * Look for a solution,
